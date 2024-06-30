@@ -4,7 +4,8 @@ WORKDIR /app
 COPY package*.json .
 RUN npm install
 COPY . .
-EXPOSE 4040
+EXPOSE 8083
+RUN npm run prisma:generate
 RUN npm run build
 
 FROM node:19 as production
