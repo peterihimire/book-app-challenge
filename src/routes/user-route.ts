@@ -1,16 +1,10 @@
 import { Router } from "express";
-import {
-  getUserInfo,
-  addFriend,
-  addFollower,
-} from "../controllers/user-controller";
+import { getUserInfo } from "../controllers/user-controller";
 
-import { verifySessionAndAuthorization } from "../middlewares/verify-session";
+import { verifyTokenAndAuthorization } from "../middlewares/verify-token";
 
 const router = Router();
 
-router.get("/acct_info", verifySessionAndAuthorization, getUserInfo);
-router.post("/add_friend", verifySessionAndAuthorization, addFriend);
-router.post("/add_follower", verifySessionAndAuthorization, addFollower);
+router.get("/acct_info", verifyTokenAndAuthorization, getUserInfo);
 
 export default router;

@@ -44,9 +44,9 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 
-app.use("/api/abbeytask/v1/auth", authRoute);
-app.use("/api/abbeytask/v1/users", userRoute);
-app.use("/api/abbeytask/v1/test", testRoute);
+app.use("/api/booktask/v1/auth", authRoute);
+app.use("/api/booktask/v1/users", userRoute);
+app.use("/api/booktask/v1/test", testRoute);
 
 app.use(unknownRoute);
 app.use(logErrorMiddleware);

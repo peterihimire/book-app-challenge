@@ -84,32 +84,7 @@ export const login: RequestHandler = async (req, res, next) => {
       );
     }
 
-    // Session
-    const { createdAt, updatedAt, ...session_data } = found_user;
-
-    const new_session = {
-      id: session_data.id.toString(),
-      acctId: session_data.acctId,
-      email: session_data.email,
-      password: session_data.password,
-    };
-
-    req.session.user = new_session;
-    req.session.save(function (err) {
-      if (err) return next(err);
-    });
-
-    const {
-      id,
-      acctId,
-      password,
-      friends,
-      friendOf,
-      followers,
-      following,
-      fullname,
-      ...others
-    } = found_user;
+    const { id, password, ...others } = found_user;
 
     res.status(httpStatusCodes.OK).json({
       status: "success",
