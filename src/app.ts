@@ -4,7 +4,9 @@ import cookieParser from "cookie-parser";
 import { CustomUser } from "./types/types";
 
 import authRoute from "./routes/auth-route";
-import userRoute from "./routes/user-route";
+import authorRoute from "./routes/author-route";
+import bookRoute from "./routes/book-route";
+import borrowRecordRoute from "./routes/borrow-record-route";
 import testRoute from "./routes/test-route";
 
 import {
@@ -44,9 +46,11 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 
-app.use("/api/booktask/v1/auth", authRoute);
-app.use("/api/booktask/v1/users", userRoute);
-app.use("/api/booktask/v1/test", testRoute);
+app.use("/api/bookchallenge/v1/auth", authRoute);
+app.use("/api/bookchallenge/v1/authors", authorRoute);
+app.use("/api/bookchallenge/v1/books", bookRoute);
+app.use("/api/bookchallenge/v1/borrow-records", borrowRecordRoute);
+app.use("/api/bookchallenge/v1/test", testRoute);
 
 app.use(unknownRoute);
 app.use(logErrorMiddleware);

@@ -7,7 +7,7 @@ const testFunction: RequestHandler = (req, res, next) => {
   try {
     res.status(httpStatusCodes.OK).json({
       status: "success",
-      msg: "Abbey Task API was initiated successfully!",
+      msg: "Book challenge API was initiated successfully!",
     });
   } catch (error: any) {
     if (!error.statusCode) {
@@ -17,6 +17,6 @@ const testFunction: RequestHandler = (req, res, next) => {
   }
 };
 
-router.get("/test_api", testFunction);
+router.get("", testFunction);
 
 export default router;

@@ -14,7 +14,7 @@ CREATE TABLE "books" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "authorId" INTEGER NOT NULL,
-    "publishedYear" TIMESTAMP(3) NOT NULL,
+    "publishedYear" TEXT NOT NULL,
     "genre" TEXT NOT NULL,
     "availableCopies" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -36,7 +36,7 @@ CREATE TABLE "authors" (
 );
 
 -- CreateTable
-CREATE TABLE "borrowRecords" (
+CREATE TABLE "borrowrecords" (
     "id" SERIAL NOT NULL,
     "bookId" INTEGER NOT NULL,
     "borrower" TEXT NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE "borrowRecords" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "borrowRecords_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "borrowrecords_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -58,4 +58,4 @@ CREATE UNIQUE INDEX "books_title_key" ON "books"("title");
 CREATE UNIQUE INDEX "authors_name_key" ON "authors"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "borrowRecords_bookId_key" ON "borrowRecords"("bookId");
+CREATE UNIQUE INDEX "borrowrecords_bookId_key" ON "borrowrecords"("bookId");

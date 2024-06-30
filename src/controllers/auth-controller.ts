@@ -3,7 +3,8 @@ import { httpStatusCodes } from "../utils/http-status-codes";
 import BaseError from "../utils/base-error";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
-import { foundUser, createUser } from "../repositories/user-repository";
+import { verify, sign } from "jsonwebtoken";
+import { foundUser, registerUser } from "../repositories/auth-repository";
 
 dotenv.config();
 
@@ -11,8 +12,7 @@ dotenv.config();
 // @desc Regiser into account
 // @access Public
 export const register: RequestHandler = async (req, res, next) => {
-  const { fullname, email } = req.body;
-  const original_password = req.body.password;
+  const { email, password } = req.body;
 
   try {
     const found_user = await foundUser(email);
@@ -27,20 +27,26 @@ export const register: RequestHandler = async (req, res, next) => {
     }
 
     const salt = await bcrypt.genSalt();
-    const hashed_password = await bcrypt.hash(original_password, salt);
+    const hashed_password = await bcrypt.hash(password, salt);
 
     const payload = {
-      fullname: fullname,
       email: email,
       password: hashed_password,
     };
 
-    const created_user = await createUser(payload);
-    const { id, password, ...others } = created_user;
+    const created_user = await registerUser(payload);
+
+    if (!created_user) {
+      throw new BaseError(
+        "Failed to create user",
+        httpStatusCodes.INTERNAL_SERVER
+      );
+    }
+    const { id, password: hashedPassword, ...others } = created_user;
 
     res.status(httpStatusCodes.OK).json({
       status: "success",
-      msg: "Account created!.",
+      msg: "Signup successful!.",
       data: { ...others },
     });
   } catch (error: any) {
@@ -84,11 +90,35 @@ export const login: RequestHandler = async (req, res, next) => {
       );
     }
 
+    // JSON WEB TOKEN
+    const JWT_KEY = process.env.JWT_KEY;
+    if (!JWT_KEY) {
+      throw new Error("JWT_KEY is not defined in the environment variables");
+    }
+
+    const token = sign(
+      {
+        id: found_user.id,
+        email: found_user.email,
+      },
+      JWT_KEY,
+      { expiresIn: "1h" }
+    );
+
+    // Set the token in an HttpOnly cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      // secure: process.env.NODE_ENV === "production",
+      sameSite: "lax", // because I'm working on localhost
+      maxAge: 3600000,
+    });
+
     const { id, password, ...others } = found_user;
 
     res.status(httpStatusCodes.OK).json({
       status: "success",
-      msg: "You are logged in",
+      msg: "Signin successful",
       data: { ...others },
     });
   } catch (error: any) {
@@ -102,15 +132,15 @@ export const login: RequestHandler = async (req, res, next) => {
 // @route POST api/auth/logout
 // @desc Logout into account
 // @access Private
-export const logout: RequestHandler = (req, res, next) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return next(new BaseError("Logout error!", httpStatusCodes.UNAUTHORIZED));
-    }
-
-    res.status(200).json({
+export const logout: RequestHandler = async (req, res, next) => {
+  res
+    .clearCookie("token", {
+      secure: false,
+      sameSite: "lax",
+    })
+    .status(200)
+    .json({
       status: "success",
-      msg: "Logout successful!",
+      msg: "Signout successful.",
     });
-  });
 };
