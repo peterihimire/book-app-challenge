@@ -13,10 +13,11 @@ services:
       - api
     networks:
       appnet:
-        ipv4_address: 192.172.0.2
+        ipv4_address: 192.175.0.2
     restart: always
   db:
-    image: postgres
+    container_name: pg_db
+    image: postgres:15
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -25,7 +26,7 @@ services:
       - ./data/dbdata:/var/lib/postgresql/data
     networks:
       appnet:
-        ipv4_address: 192.172.0.3
+        ipv4_address: 192.175.0.3
     ports:
       - 5439:5432
     restart: always
@@ -39,11 +40,9 @@ services:
     platform: linux/amd64
     depends_on:
       - db
-      - redis
-      - pgadmin
     networks:
       appnet:
-        ipv4_address: 192.172.0.5
+        ipv4_address: 192.175.0.5
     environment:
       - NODE_ENV=development
       - DB_HOST=db
@@ -66,5 +65,5 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: "192.172.0.0/24"
-          gateway: 192.172.0.1
+        - subnet: "192.175.0.0/24"
+          gateway: 192.175.0.1
