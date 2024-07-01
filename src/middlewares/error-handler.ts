@@ -27,7 +27,7 @@ export const returnError: ErrorRequestHandler = (err, req, res, next) => {
     return next(err);
   }
 
-  res.status(err.code || 500);
+  res.status(err?.code || err?.statusCode || err.errorCode || 500);
   res.json({
     status: "fail",
     msg: err.message || "An unknown error occurred!",

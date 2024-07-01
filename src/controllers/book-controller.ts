@@ -42,7 +42,7 @@ export const addBook: RequestHandler = async (req, res, next) => {
     console.log("Created book yes...", createdBook);
 
     if (!createdBook) {
-      throw new BaseError(
+      return new BaseError(
         "Failed to create book",
         httpStatusCodes.INTERNAL_SERVER
       );
@@ -69,7 +69,6 @@ export const addBook: RequestHandler = async (req, res, next) => {
 export const getBooks: RequestHandler = async (req, res, next) => {
   try {
     const books = await findAllBooks();
-    console.log("This are the found books....", books);
 
     res.status(httpStatusCodes.OK).json({
       status: "success",
@@ -92,10 +91,13 @@ export const getBook: RequestHandler = async (req, res, next) => {
 
   try {
     const book = await findBookById(Number(id));
-    console.log("This is the found book....", book);
+
+    // console.log("what is book", book);
 
     if (!book) {
-      throw new BaseError("Book does not exist.", httpStatusCodes.NOT_FOUND);
+      return next(
+        new BaseError("Book does not exist.", httpStatusCodes.NOT_FOUND)
+      );
     }
 
     res.status(httpStatusCodes.OK).json({
@@ -136,9 +138,8 @@ export const updateBook: RequestHandler = async (req, res, next) => {
     console.log("Updated category yes...", updatedBook);
 
     if (!updatedBook) {
-      throw new BaseError(
-        "Failed to update book",
-        httpStatusCodes.INTERNAL_SERVER
+      return next(
+        new BaseError("Failed to update book", httpStatusCodes.INTERNAL_SERVER)
       );
     }
     const { createdAt, ...others } = updatedBook;
