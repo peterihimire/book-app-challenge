@@ -23,8 +23,7 @@ import {
 // @desc Login into account
 // @access Private
 export const addBorrowRecord: RequestHandler = async (req, res, next) => {
-  const { title, bookId, borrower, borrowDate, returnDate, availableCopies } =
-    req.body;
+  const { bookId, borrower, borrowDate, returnDate } = req.body;
 
   try {
     const errors = validationResult(req);
@@ -33,27 +32,27 @@ export const addBorrowRecord: RequestHandler = async (req, res, next) => {
     }
 
     const payload = {
-      title: title as string,
       borrower: borrower as string,
       bookId: bookId as number,
       borrowDate: moment(borrowDate as string).toDate(),
       returnDate: moment(returnDate as string).toDate(),
-      availableCopies: availableCopies as number,
     };
 
     const createdBorrowRecord = await createBorrowRecord(payload);
     console.log("Created borrow record yes...", createdBorrowRecord);
 
     if (!createdBorrowRecord) {
-      throw new BaseError(
-        "Failed to create borrow record",
-        httpStatusCodes.INTERNAL_SERVER
+      return next(
+        new BaseError(
+          "Failed to create borrow record",
+          httpStatusCodes.INTERNAL_SERVER
+        )
       );
     }
 
     const { createdAt, updatedAt, ...others } = createdBorrowRecord;
 
-    res.status(httpStatusCodes.OK).json({
+    res.status(httpStatusCodes.CREATED).json({
       status: "success",
       msg: "Borrow Record Added!.",
       data: { ...others },
@@ -72,7 +71,6 @@ export const addBorrowRecord: RequestHandler = async (req, res, next) => {
 export const getBorrowRecords: RequestHandler = async (req, res, next) => {
   try {
     const borrowRecords = await findAllBorrowRecords();
-    console.log("This are the found borrowRecords....", borrowRecords);
 
     res.status(httpStatusCodes.OK).json({
       status: "success",
@@ -98,7 +96,9 @@ export const getBorrowRecord: RequestHandler = async (req, res, next) => {
     console.log("This is the found borrow record....", borrowRecord);
 
     if (!borrowRecord) {
-      throw new BaseError("Record does not exist.", httpStatusCodes.NOT_FOUND);
+      return next(
+        new BaseError("Record does not exist.", httpStatusCodes.NOT_FOUND)
+      );
     }
 
     res.status(httpStatusCodes.OK).json({
@@ -118,22 +118,18 @@ export const getBorrowRecord: RequestHandler = async (req, res, next) => {
 // @desc Login into account
 // @access Private
 export const updateBorrowRecord: RequestHandler = async (req, res, next) => {
-  // const { admin } = req.session;
   const { id } = req.params;
-  const { title, bookId, borrower, borrowDate, returnDate, availableCopies } =
-    req.body;
+  const { bookId, borrower, borrowDate, returnDate } = req.body;
 
   try {
     const foundBorrowRecord = await findBorrowRecordById(Number(id));
     console.log("This is found borrow record....", foundBorrowRecord);
 
     const payload = {
-      title: title as string,
       borrower: borrower as string,
       bookId: bookId as number,
       borrowDate: moment(borrowDate as string).toDate(),
       returnDate: moment(returnDate as string).toDate(),
-      availableCopies: availableCopies as number,
     };
 
     const updatedBorrowRecord = await updateBorrowRecordById(

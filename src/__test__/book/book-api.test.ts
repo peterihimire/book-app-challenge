@@ -106,16 +106,14 @@ describe("Book API", () => {
       .set("Cookie", cookie);
 
     expect(response.status).toBe(200);
-    // expect(response.body.data.id).toBe(bookId);
 
     // Step 2: Attempt to retrieve the deleted book
     const getResponse = await request(app).get(
       `/api/bookchallenge/v1/books/${bookId}`
     );
-    // console.log("get delete response...", getResponse);
 
     // Step 3: Verify the book no longer exists
-    expect(getResponse.status).toBe(404); // Assuming your API returns 404 for not found
+    expect(getResponse.status).toBe(404);
     expect(getResponse.body.data).toBeUndefined();
     // expect(getResponse.body.data).toBeNull();
   });

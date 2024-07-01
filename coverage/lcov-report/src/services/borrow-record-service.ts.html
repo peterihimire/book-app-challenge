@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">68.75% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/16</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">54.54% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -140,7 +140,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -151,22 +151,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -178,7 +163,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -187,7 +175,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { BorrowRecord } from "@prisma/client";
 import {
@@ -202,8 +202,8 @@ import {
  * Fetches all borrow records.
  * @returns Promise&lt;BorrowRecord[]&gt;
  */
-export const findAllBorrowRecords = <span class="fstat-no" title="function not covered" >async </span>(): Promise&lt;BorrowRecord[]&gt; =&gt; {
-<span class="cstat-no" title="statement not covered" >  return foundBorrowRecordsRepository();</span>
+export const findAllBorrowRecords = async (): Promise&lt;BorrowRecord[]&gt; =&gt; {
+  return foundBorrowRecordsRepository();
 };
 &nbsp;
 /**
@@ -211,10 +211,10 @@ export const findAllBorrowRecords = <span class="fstat-no" title="function not c
  * @param id The ID of the borrow record to fetch.
  * @returns Promise&lt;BorrowRecord | null&gt;
  */
-export const findBorrowRecordById = <span class="fstat-no" title="function not covered" >async </span>(
+export const findBorrowRecordById = async (
   id: number
 ): Promise&lt;BorrowRecord | null&gt; =&gt; {
-<span class="cstat-no" title="statement not covered" >  return foundBorrowRecordByIdRepository(id);</span>
+  return foundBorrowRecordByIdRepository(id);
 };
 &nbsp;
 /**
@@ -222,13 +222,13 @@ export const findBorrowRecordById = <span class="fstat-no" title="function not c
  * @param data The data of the borrow record to create.
  * @returns Promise&lt;BorrowRecord | null&gt;
  */
-export const createBorrowRecord = <span class="fstat-no" title="function not covered" >async </span>(data: {
+export const createBorrowRecord = async (data: {
   borrower: string;
   bookId: number;
   borrowDate: Date;
   returnDate: Date;
 }): Promise&lt;BorrowRecord | null&gt; =&gt; {
-<span class="cstat-no" title="statement not covered" >  return createBorrowRecordRepository(data);</span>
+  return createBorrowRecordRepository(data);
 };
 &nbsp;
 /**
@@ -237,11 +237,11 @@ export const createBorrowRecord = <span class="fstat-no" title="function not cov
  * @param data Partial data of the borrow record to update.
  * @returns Promise&lt;BorrowRecord | null&gt;
  */
-export const updateBorrowRecordById = <span class="fstat-no" title="function not covered" >async </span>(
+export const updateBorrowRecordById = async (
   id: number,
   data: Partial&lt;BorrowRecord&gt;
 ): Promise&lt;BorrowRecord | null&gt; =&gt; {
-<span class="cstat-no" title="statement not covered" >  return updateBorrowRecordByIdRepository(id, data);</span>
+  return updateBorrowRecordByIdRepository(id, data);
 };
 &nbsp;
 /**
@@ -249,8 +249,8 @@ export const updateBorrowRecordById = <span class="fstat-no" title="function not
  * @param id The ID of the borrow record to delete.
  * @returns Promise&lt;void&gt;
  */
-export const deleteBorrowRecordById = <span class="fstat-no" title="function not covered" >async </span>(id: number): Promise&lt;void&gt; =&gt; {
-<span class="cstat-no" title="statement not covered" >  await deleteBorrowRecordByIdRepository(id);</span>
+export const deleteBorrowRecordById = async (id: number): Promise&lt;void&gt; =&gt; {
+  await deleteBorrowRecordByIdRepository(id);
 };
 &nbsp;</pre></td></tr></table></pre>
 
@@ -259,7 +259,7 @@ export const deleteBorrowRecordById = <span class="fstat-no" title="function not
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-07-01T18:39:08.951Z
+                at 2024-07-01T22:41:36.297Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -3,13 +3,6 @@ import moment from "moment";
 import { httpStatusCodes } from "../utils/http-status-codes";
 import BaseError from "../utils/base-error";
 import { validationResult } from "express-validator";
-// import {
-//   foundAuthorById,
-//   foundAuthors,
-//   updateAuthorById,
-//   deleteAuthorById,
-//   createAuthor,
-// } from "../repositories/author-repository";
 import {
   findAllAuthors,
   findAuthorById,
@@ -40,15 +33,17 @@ export const addAuthor: RequestHandler = async (req, res, next) => {
     console.log("Created author yes...", createdAuthor);
 
     if (!createdAuthor) {
-      throw new BaseError(
-        "Failed to create author",
-        httpStatusCodes.INTERNAL_SERVER
+      return next(
+        new BaseError(
+          "Failed to create author",
+          httpStatusCodes.INTERNAL_SERVER
+        )
       );
     }
 
     const { createdAt, updatedAt, ...others } = createdAuthor;
 
-    res.status(httpStatusCodes.OK).json({
+    res.status(httpStatusCodes.CREATED).json({
       status: "success",
       msg: "Author Added!.",
       data: { ...others },
@@ -67,7 +62,6 @@ export const addAuthor: RequestHandler = async (req, res, next) => {
 export const getAuthors: RequestHandler = async (req, res, next) => {
   try {
     const authors = await findAllAuthors();
-    console.log("This are the found authors....", authors);
 
     res.status(httpStatusCodes.OK).json({
       status: "success",
@@ -93,7 +87,9 @@ export const getAuthor: RequestHandler = async (req, res, next) => {
     console.log("This are the found author....", author);
 
     if (!author) {
-      throw new BaseError("Author does not exist.", httpStatusCodes.NOT_FOUND);
+      return next(
+        new BaseError("Author does not exist.", httpStatusCodes.NOT_FOUND)
+      );
     }
 
     res.status(httpStatusCodes.OK).json({
@@ -113,7 +109,6 @@ export const getAuthor: RequestHandler = async (req, res, next) => {
 // @desc Login into account
 // @access Private
 export const updateAuthor: RequestHandler = async (req, res, next) => {
-  // const { admin } = req.session;
   const { id } = req.params;
 
   const { name, bio, birthdate } = req.body;
@@ -129,12 +124,14 @@ export const updateAuthor: RequestHandler = async (req, res, next) => {
     };
 
     const updatedAuthor = await updateAuthorById(Number(id), payload);
-    console.log("Updated category yes...", updatedAuthor);
+    console.log("Updated author yes...", updatedAuthor);
 
     if (!updatedAuthor) {
-      throw new BaseError(
-        "Failed to update author",
-        httpStatusCodes.INTERNAL_SERVER
+      return next(
+        new BaseError(
+          "Failed to update author",
+          httpStatusCodes.INTERNAL_SERVER
+        )
       );
     }
     const { id: authorId, createdAt, updatedAt, ...others } = updatedAuthor;

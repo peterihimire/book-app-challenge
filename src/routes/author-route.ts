@@ -14,12 +14,7 @@ const router = Router();
 router.post("", verifyTokenAndAuthorization, AuthorValidator, addAuthor);
 router.get("/:id", getAuthor);
 router.get("", getAuthors);
-router.patch(
-  "/:id",
-  verifyTokenAndAuthorization,
-  AuthorValidator,
-  updateAuthor
-);
+router.patch("/:id", verifyTokenAndAuthorization, updateAuthor);
 router.delete("/:id", verifyTokenAndAuthorization, deleteAuthor);
 
 export default router;
