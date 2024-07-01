@@ -12,11 +12,10 @@ interface JwtPayload {
 }
 
 export const verifyToken: RequestHandler = (req, res, next) => {
-  const authHeader = req.headers.authorization;
+  const token = req.cookies.token; // Read token from cookies
 
-  if (authHeader) {
-    const token = authHeader.split(" ")[1];
-    verify(token, process.env.JWT_KEY as string, (err, decoded) => {
+  if (token) {
+    verify(token, process.env.JWT_KEY as string, (err: any, decoded: any) => {
       if (err) {
         return next(
           new BaseError("Expired or invalid token!", httpStatusCodes.FORBIDDEN)
@@ -32,6 +31,25 @@ export const verifyToken: RequestHandler = (req, res, next) => {
       new BaseError("You are not authenticated!", httpStatusCodes.UNAUTHORIZED)
     );
   }
+  // const authHeader = req.headers.authorization;
+  // if (authHeader) {
+  //   const token = authHeader.split(" ")[1];
+  //   verify(token, process.env.JWT_KEY as string, (err, decoded) => {
+  //     if (err) {
+  //       return next(
+  //         new BaseError("Expired or invalid token!", httpStatusCodes.FORBIDDEN)
+  //       );
+  //     }
+
+  //     req.user = decoded as JwtPayload;
+  //     console.log(req.user);
+  //     next();
+  //   });
+  // } else {
+  //   return next(
+  //     new BaseError("You are not authenticated!", httpStatusCodes.UNAUTHORIZED)
+  //   );
+  // }
 };
 
 // AUTHENTICATED USER

@@ -50,7 +50,7 @@ export const addBook: RequestHandler = async (req, res, next) => {
 
     const { createdAt, updatedAt, ...others } = createdBook;
 
-    res.status(httpStatusCodes.OK).json({
+    res.status(httpStatusCodes.CREATED).json({
       status: "success",
       msg: "Book Added!.",
       data: { ...others },
