@@ -2,13 +2,21 @@ import { RequestHandler } from "express";
 import { httpStatusCodes } from "../utils/http-status-codes";
 import BaseError from "../utils/base-error";
 import { validationResult } from "express-validator";
+// import {
+//   foundBookById,
+//   foundBooks,
+//   updateBookById,
+//   deleteBookById,
+//   createBook,
+// } from "../repositories/book-repository";
+
 import {
-  foundBookById,
-  foundBooks,
+  createBook,
+  findAllBooks,
+  findBookById,
   updateBookById,
   deleteBookById,
-  createBook,
-} from "../repositories/book-repository";
+} from "../services/book-service";
 
 // @route POST api/auth/login
 // @desc Login into account
@@ -60,7 +68,7 @@ export const addBook: RequestHandler = async (req, res, next) => {
 // @access Private
 export const getBooks: RequestHandler = async (req, res, next) => {
   try {
-    const books = await foundBooks();
+    const books = await findAllBooks();
     console.log("This are the found books....", books);
 
     res.status(httpStatusCodes.OK).json({
@@ -83,8 +91,12 @@ export const getBook: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const book = await foundBookById(Number(id));
+    const book = await findBookById(Number(id));
     console.log("This is the found book....", book);
+
+    if (!book) {
+      throw new BaseError("Book does not exist.", httpStatusCodes.NOT_FOUND);
+    }
 
     res.status(httpStatusCodes.OK).json({
       status: "success",
@@ -108,7 +120,7 @@ export const updateBook: RequestHandler = async (req, res, next) => {
   const { title, authorId, publishedYear, genre, availableCopies } = req.body;
 
   try {
-    const foundBook = await foundBookById(Number(id));
+    const foundBook = await findBookById(Number(id));
     console.log("This is found book....", foundBook);
 
     const payload = {
@@ -129,7 +141,7 @@ export const updateBook: RequestHandler = async (req, res, next) => {
         httpStatusCodes.INTERNAL_SERVER
       );
     }
-    const { id: bookId, createdAt, updatedAt, ...others } = updatedBook;
+    const { createdAt, ...others } = updatedBook;
 
     res.status(httpStatusCodes.OK).json({
       status: "success",

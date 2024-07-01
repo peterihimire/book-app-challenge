@@ -3,13 +3,21 @@ import moment from "moment";
 import { httpStatusCodes } from "../utils/http-status-codes";
 import BaseError from "../utils/base-error";
 import { validationResult } from "express-validator";
+// import {
+//   foundBorrowRecordById,
+//   foundBorrowRecords,
+//   createBorrowRecord,
+//   updateBorrowRecordById,
+//   deleteBorrowRecordById,
+// } from "../repositories/borrow-record-repository";
+
 import {
-  foundBorrowRecordById,
-  foundBorrowRecords,
+  findAllBorrowRecords,
+  findBorrowRecordById,
   createBorrowRecord,
   updateBorrowRecordById,
   deleteBorrowRecordById,
-} from "../repositories/borrowrecord-repository";
+} from "../services/borrow-record-service";
 
 // @route POST api/auth/login
 // @desc Login into account
@@ -19,10 +27,10 @@ export const addBorrowRecord: RequestHandler = async (req, res, next) => {
     req.body;
 
   try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-      }
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
     const payload = {
       title: title as string,
@@ -43,7 +51,7 @@ export const addBorrowRecord: RequestHandler = async (req, res, next) => {
       );
     }
 
-    const { id, createdAt, updatedAt, ...others } = createdBorrowRecord;
+    const { createdAt, updatedAt, ...others } = createdBorrowRecord;
 
     res.status(httpStatusCodes.OK).json({
       status: "success",
@@ -63,7 +71,7 @@ export const addBorrowRecord: RequestHandler = async (req, res, next) => {
 // @access Private
 export const getBorrowRecords: RequestHandler = async (req, res, next) => {
   try {
-    const borrowRecords = await foundBorrowRecords();
+    const borrowRecords = await findAllBorrowRecords();
     console.log("This are the found borrowRecords....", borrowRecords);
 
     res.status(httpStatusCodes.OK).json({
@@ -86,8 +94,12 @@ export const getBorrowRecord: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const borrowRecord = await foundBorrowRecordById(Number(id));
+    const borrowRecord = await findBorrowRecordById(Number(id));
     console.log("This is the found borrow record....", borrowRecord);
+
+    if (!borrowRecord) {
+      throw new BaseError("Record does not exist.", httpStatusCodes.NOT_FOUND);
+    }
 
     res.status(httpStatusCodes.OK).json({
       status: "success",
@@ -112,7 +124,7 @@ export const updateBorrowRecord: RequestHandler = async (req, res, next) => {
     req.body;
 
   try {
-    const foundBorrowRecord = await foundBorrowRecordById(Number(id));
+    const foundBorrowRecord = await findBorrowRecordById(Number(id));
     console.log("This is found borrow record....", foundBorrowRecord);
 
     const payload = {

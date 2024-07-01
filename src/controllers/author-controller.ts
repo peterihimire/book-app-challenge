@@ -3,13 +3,20 @@ import moment from "moment";
 import { httpStatusCodes } from "../utils/http-status-codes";
 import BaseError from "../utils/base-error";
 import { validationResult } from "express-validator";
+// import {
+//   foundAuthorById,
+//   foundAuthors,
+//   updateAuthorById,
+//   deleteAuthorById,
+//   createAuthor,
+// } from "../repositories/author-repository";
 import {
-  foundAuthorById,
-  foundAuthors,
+  findAllAuthors,
+  findAuthorById,
   updateAuthorById,
   deleteAuthorById,
   createAuthor,
-} from "../repositories/author-repository";
+} from "../services/author-service";
 
 // @route POST api/auth/login
 // @desc Login into account
@@ -59,7 +66,7 @@ export const addAuthor: RequestHandler = async (req, res, next) => {
 // @access Private
 export const getAuthors: RequestHandler = async (req, res, next) => {
   try {
-    const authors = await foundAuthors();
+    const authors = await findAllAuthors();
     console.log("This are the found authors....", authors);
 
     res.status(httpStatusCodes.OK).json({
@@ -82,8 +89,12 @@ export const getAuthor: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const author = await foundAuthorById(Number(id));
+    const author = await findAuthorById(Number(id));
     console.log("This are the found author....", author);
+
+    if (!author) {
+      throw new BaseError("Author does not exist.", httpStatusCodes.NOT_FOUND);
+    }
 
     res.status(httpStatusCodes.OK).json({
       status: "success",
@@ -108,7 +119,7 @@ export const updateAuthor: RequestHandler = async (req, res, next) => {
   const { name, bio, birthdate } = req.body;
 
   try {
-    const foundAuthor = await foundAuthorById(Number(id));
+    const foundAuthor = await findAuthorById(Number(id));
     console.log("This is found author....", foundAuthor);
 
     const payload = {

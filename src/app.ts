@@ -1,12 +1,12 @@
 import express, { Application, Request } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { CustomUser } from "./types/types";
-
+// import { CustomUser } from "./types/types";
 import authRoute from "./routes/auth-route";
 import authorRoute from "./routes/author-route";
 import bookRoute from "./routes/book-route";
 import borrowRecordRoute from "./routes/borrow-record-route";
+import docRoute from "./routes/api-doc-route";
 import testRoute from "./routes/test-route";
 
 import {
@@ -15,11 +15,11 @@ import {
   unknownRoute,
 } from "./middlewares/error-handler";
 
-declare module "express-session" {
-  interface SessionData {
-    user: CustomUser;
-  }
-}
+// declare module "express-session" {
+//   interface SessionData {
+//     user: CustomUser;
+//   }
+// }
 
 const corsOptions = {
   origin: ["http://localhost:3000", "http://localhost:3000"],
@@ -50,6 +50,7 @@ app.use("/api/bookchallenge/v1/auth", authRoute);
 app.use("/api/bookchallenge/v1/authors", authorRoute);
 app.use("/api/bookchallenge/v1/books", bookRoute);
 app.use("/api/bookchallenge/v1/borrow-records", borrowRecordRoute);
+app.use("/api/bookchallenge/v1/api-docs", docRoute); // Visit this link from a browser
 app.use("/api/bookchallenge/v1/test", testRoute);
 
 app.use(unknownRoute);

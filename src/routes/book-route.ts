@@ -14,7 +14,7 @@ const router = Router();
 router.post("", verifyTokenAndAuthorization, BookValidator, addBook);
 router.get("/:id", getBook);
 router.get("", getBooks);
-router.patch("/:id", verifyTokenAndAuthorization, BookValidator, updateBook);
+router.patch("/:id", verifyTokenAndAuthorization, updateBook);
 router.delete("/:id", verifyTokenAndAuthorization, deleteBook);
 
 export default router;

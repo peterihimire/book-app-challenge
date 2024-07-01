@@ -5,7 +5,8 @@ import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import { sign } from "jsonwebtoken";
 import { validationResult } from "express-validator";
-import { foundUser, registerUser } from "../repositories/auth-repository";
+// import { foundUser, registerUser } from "../repositories/auth-repository";
+import { findUserByEmail, registerUser } from "../services/auth-service";
 
 dotenv.config();
 
@@ -21,7 +22,7 @@ export const register: RequestHandler = async (req, res, next) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const found_user = await foundUser(email);
+    const found_user = await findUserByEmail(email);
 
     if (found_user) {
       return next(
@@ -71,7 +72,7 @@ export const login: RequestHandler = async (req, res, next) => {
   const original_password = req.body.password;
 
   try {
-    const found_user = await foundUser(email);
+    const found_user = await findUserByEmail(email);
 
     if (!found_user) {
       return next(
