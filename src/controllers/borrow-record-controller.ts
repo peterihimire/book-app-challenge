@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import moment from "moment";
 import { httpStatusCodes } from "../utils/http-status-codes";
 import BaseError from "../utils/base-error";
-// import { foundAdmin } from "../repositories/admin-auth-repository";
+import { validationResult } from "express-validator";
 import {
   foundBorrowRecordById,
   foundBorrowRecords,
@@ -19,6 +19,11 @@ export const addBorrowRecord: RequestHandler = async (req, res, next) => {
     req.body;
 
   try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+
     const payload = {
       title: title as string,
       borrower: borrower as string,

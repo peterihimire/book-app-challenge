@@ -7,13 +7,19 @@ import {
   addAuthor,
 } from "../controllers/author-controller";
 import { verifyTokenAndAuthorization } from "../middlewares/verify-token";
+import { AuthorValidator } from "../middlewares/validator";
 
 const router = Router();
 
-router.post("",verifyTokenAndAuthorization, addAuthor);
+router.post("", verifyTokenAndAuthorization, AuthorValidator, addAuthor);
 router.get("/:id", getAuthor);
 router.get("", getAuthors);
-router.patch("/:id",verifyTokenAndAuthorization, updateAuthor);
-router.delete("/:id",verifyTokenAndAuthorization, deleteAuthor);
+router.patch(
+  "/:id",
+  verifyTokenAndAuthorization,
+  AuthorValidator,
+  updateAuthor
+);
+router.delete("/:id", verifyTokenAndAuthorization, deleteAuthor);
 
 export default router;

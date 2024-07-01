@@ -7,10 +7,11 @@ import {
   deleteBorrowRecord,
 } from "../controllers/borrow-record-controller";
 import { verifyTokenAndAuthorization } from "../middlewares/verify-token";
+import { RecordValidator } from "../middlewares/validator";
 
 const router = Router();
 
-router.post("", verifyTokenAndAuthorization, addBorrowRecord);
+router.post("", verifyTokenAndAuthorization,RecordValidator, addBorrowRecord);
 router.get("/:id", getBorrowRecord);
 router.get("", getBorrowRecords);
 router.patch("/:id", verifyTokenAndAuthorization, updateBorrowRecord);

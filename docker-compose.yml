@@ -16,8 +16,8 @@ services:
         ipv4_address: 192.175.0.2
     restart: always
   db:
-    container_name: pg_db
-    image: postgres:15
+    container_name: postgres
+    image: postgres
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -28,7 +28,7 @@ services:
       appnet:
         ipv4_address: 192.175.0.3
     ports:
-      - 5437:5432
+      - 6500:5432
     restart: always
   api:
     image: peterihimire/book-app-challenge
@@ -44,7 +44,6 @@ services:
     environment:
       - DB_HOST=db
       - PORT=${PORT}
-      - DATABASE_URL=${DATABASE_URL}
       - JWT_KEY=${JWT_KEY}
     ports:
       - ${PORT}:${PORT} # Publish to host

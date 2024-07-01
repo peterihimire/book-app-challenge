@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import moment from "moment";
 import { httpStatusCodes } from "../utils/http-status-codes";
 import BaseError from "../utils/base-error";
-// import { foundAdmin } from "../repositories/admin-auth-repository";
+import { validationResult } from "express-validator";
 import {
   foundAuthorById,
   foundAuthors,
@@ -18,6 +18,11 @@ export const addAuthor: RequestHandler = async (req, res, next) => {
   const { name, bio, birthdate } = req.body;
 
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const payload = {
       name: name as string,
       birthdate: moment(birthdate as string).toDate(),
@@ -34,7 +39,7 @@ export const addAuthor: RequestHandler = async (req, res, next) => {
       );
     }
 
-    const { id, createdAt, updatedAt, ...others } = createdAuthor;
+    const { createdAt, updatedAt, ...others } = createdAuthor;
 
     res.status(httpStatusCodes.OK).json({
       status: "success",

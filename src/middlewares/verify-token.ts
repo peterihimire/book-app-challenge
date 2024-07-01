@@ -11,27 +11,6 @@ interface JwtPayload {
   email: string;
 }
 
-// export const verifyToken: RequestHandler = (req, res, next) => {
-//   const authHeader = req.headers.authorization;
-
-//   if (authHeader) {
-//     const token = authHeader.split(" ")[1];
-//     verify(token, process.env.JWT_KEY as string, (err, decoded) => {
-//       if (err)
-//         return res
-//           .status(httpStatusCodes.FORBIDDEN)
-//           .json("Expired or invalid token!");
-//       req.user = decoded as JwtPayload;
-//       console.log(req.user);
-//       next();
-//     });
-//   } else {
-//     return res
-//       .status(httpStatusCodes.UNAUTHORIZED)
-//       .json("You are not authenticated!");
-//   }
-// };
-
 export const verifyToken: RequestHandler = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
@@ -57,19 +36,6 @@ export const verifyToken: RequestHandler = (req, res, next) => {
 
 // AUTHENTICATED USER
 export const verifyTokenAndAuthorization: RequestHandler = (req, res, next) => {
-  // verifyToken(req, res, () => {
-  //   if (req?.user?.id === Number(req.params.userId)) {
-  //     next();
-  //   } else {
-  //     return next(
-  //       new BaseError(
-  //         "Not authorised to access resource",
-  //         httpStatusCodes.UNAUTHORIZED
-  //       )
-  //     );
-  //   }
-  // }
-
   verifyToken(req, res, async () => {
     const user = req.user;
 
@@ -86,7 +52,7 @@ export const verifyTokenAndAuthorization: RequestHandler = (req, res, next) => {
   });
 };
 
-module.exports = {
-  verifyToken,
-  verifyTokenAndAuthorization,
-};
+// module.exports = {
+//   verifyToken,
+//   verifyTokenAndAuthorization,
+// };

@@ -3,7 +3,8 @@ import { httpStatusCodes } from "../utils/http-status-codes";
 import BaseError from "../utils/base-error";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
-import { verify, sign } from "jsonwebtoken";
+import { sign } from "jsonwebtoken";
+import { validationResult } from "express-validator";
 import { foundUser, registerUser } from "../repositories/auth-repository";
 
 dotenv.config();
@@ -15,6 +16,11 @@ export const register: RequestHandler = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const found_user = await foundUser(email);
 
     if (found_user) {

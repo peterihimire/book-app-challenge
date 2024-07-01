@@ -16,8 +16,7 @@ services:
         ipv4_address: 192.175.0.2
     restart: always
   db:
-    container_name: pg_db
-    image: postgres:15
+    image: postgres
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -28,7 +27,7 @@ services:
       appnet:
         ipv4_address: 192.175.0.3
     ports:
-      - 5439:5432
+      - 6400:5432
     restart: always
     env_file:
       - .env
@@ -47,7 +46,6 @@ services:
       - NODE_ENV=development
       - DB_HOST=db
       - PORT=${PORT}
-      - DATABASE_URL=${DATABASE_URL}
       - JWT_KEY=${JWT_KEY}
    
     volumes:

@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import { httpStatusCodes } from "../utils/http-status-codes";
 import BaseError from "../utils/base-error";
-// import { foundAdmin } from "../repositories/admin-auth-repository";
+import { validationResult } from "express-validator";
 import {
   foundBookById,
   foundBooks,
@@ -17,6 +17,11 @@ export const addBook: RequestHandler = async (req, res, next) => {
   const { title, authorId, publishedYear, genre, availableCopies } = req.body;
 
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const payload = {
       title: title as string,
       publishedYear: publishedYear as string,
@@ -35,7 +40,7 @@ export const addBook: RequestHandler = async (req, res, next) => {
       );
     }
 
-    const { id, createdAt, updatedAt, ...others } = createdBook;
+    const { createdAt, updatedAt, ...others } = createdBook;
 
     res.status(httpStatusCodes.OK).json({
       status: "success",
@@ -124,7 +129,7 @@ export const updateBook: RequestHandler = async (req, res, next) => {
         httpStatusCodes.INTERNAL_SERVER
       );
     }
-    const { id:bookId, createdAt, updatedAt, ...others } = updatedBook;
+    const { id: bookId, createdAt, updatedAt, ...others } = updatedBook;
 
     res.status(httpStatusCodes.OK).json({
       status: "success",
