@@ -12,6 +12,7 @@ The Book Challenge API is a RESTful service for managing books, authors, and bor
 - CRUD operations for books and authors
 - Borrow record management
 - Comprehensive error handling
+- Docker Usage setup
 - Unit & Integration tests for services and API endpoints
 
 ---
@@ -149,38 +150,46 @@ docker compose up --build -d
 docker exec -it book-app-challenge-api-1 /bin/bash
 
 ```
+
 4. Run Prisma Migrate: Inside the container, navigate to the directory where your prisma folder is located and run the migration command.
 
 ```sh
 npx prisma migrate deploy
 
 ```
+
 4b. Exit from the `book-app-challenge-api-1` container
 
 ```sh
 exit
 
 ```
+
 5. Access the PostgreSQL Container: Open a shell in your PostgreSQL container.
 
 ```sh
 docker exec -it book-app-challenge-db-1 /bin/bash
 ```
+
 6. Use psql to Run the Script: Assuming your SQL scripts are mounted in the container, you can run them using psql.
 
 ```sh
 psql -U postgres -d book_app
 ```
+
 7. List all the tables.
 
 ```sh
 \dt
 ```
+
 8. I plan to extend the app to run on port 8080 with nginx.
 
 ## Running Test
 
 Unit test with jest and integration test with Supertest was integrated to test both the services and the API endpooints for books, authors and borrow reports:
+
+**NOTE:** Because all the create, update and delete routes are protected, make sure to add authentication credentials during the API integration test. You will find example usage withing the test code.
 
 ```sh
 npm test

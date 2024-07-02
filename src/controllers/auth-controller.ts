@@ -5,14 +5,15 @@ import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import { sign } from "jsonwebtoken";
 import { validationResult } from "express-validator";
-// import { foundUser, registerUser } from "../repositories/auth-repository";
 import { findUserByEmail, registerUser } from "../services/auth-service";
 
 dotenv.config();
 
-// @route POST api/auth/register
-// @desc Regiser into account
-// @access Public
+/**
+ * Creates a new user.
+ * @param data The data of the user to create.
+ * @returns Promise<User | null>
+ */
 export const register: RequestHandler = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -64,9 +65,11 @@ export const register: RequestHandler = async (req, res, next) => {
   }
 };
 
-// @route POST api/auth/login
-// @desc Login into account
-// @access Public
+/**
+ * Creates a new user.
+ * @param data The data of the user to create.
+ * @returns Promise<User | null>
+ */
 export const login: RequestHandler = async (req, res, next) => {
   const { email } = req.body;
   const original_password = req.body.password;
@@ -136,9 +139,11 @@ export const login: RequestHandler = async (req, res, next) => {
   }
 };
 
-// @route POST api/auth/logout
-// @desc Logout into account
-// @access Private
+/**
+ * Creates a new user.
+ * @param data The data of the user to create.
+ * @returns Promise<User | null>
+ */
 export const logout: RequestHandler = async (req, res, next) => {
   res
     .clearCookie("token", {

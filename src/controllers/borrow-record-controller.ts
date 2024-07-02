@@ -3,13 +3,6 @@ import moment from "moment";
 import { httpStatusCodes } from "../utils/http-status-codes";
 import BaseError from "../utils/base-error";
 import { validationResult } from "express-validator";
-// import {
-//   foundBorrowRecordById,
-//   foundBorrowRecords,
-//   createBorrowRecord,
-//   updateBorrowRecordById,
-//   deleteBorrowRecordById,
-// } from "../repositories/borrow-record-repository";
 
 import {
   findAllBorrowRecords,
@@ -19,9 +12,11 @@ import {
   deleteBorrowRecordById,
 } from "../services/borrow-record-service";
 
-// @route POST api/auth/login
-// @desc Login into account
-// @access Private
+/**
+ * Creates a new user.
+ * @param data The data of the user to create.
+ * @returns Promise<User | null>
+ */
 export const addBorrowRecord: RequestHandler = async (req, res, next) => {
   const { bookId, borrower, borrowDate, returnDate } = req.body;
 
@@ -65,9 +60,11 @@ export const addBorrowRecord: RequestHandler = async (req, res, next) => {
   }
 };
 
-// @route POST api/auth/login
-// @desc Login into account
-// @access Private
+/**
+ * Creates a new user.
+ * @param data The data of the user to create.
+ * @returns Promise<User | null>
+ */
 export const getBorrowRecords: RequestHandler = async (req, res, next) => {
   try {
     const borrowRecords = await findAllBorrowRecords();
@@ -85,9 +82,11 @@ export const getBorrowRecords: RequestHandler = async (req, res, next) => {
   }
 };
 
-// @route POST api/auth/login
-// @desc Login into account
-// @access Private
+/**
+ * Creates a new user.
+ * @param data The data of the user to create.
+ * @returns Promise<User | null>
+ */
 export const getBorrowRecord: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
 
@@ -114,9 +113,11 @@ export const getBorrowRecord: RequestHandler = async (req, res, next) => {
   }
 };
 
-// @route POST api/auth/login
-// @desc Login into account
-// @access Private
+/**
+ * Creates a new user.
+ * @param data The data of the user to create.
+ * @returns Promise<User | null>
+ */
 export const updateBorrowRecord: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
   const { bookId, borrower, borrowDate, returnDate } = req.body;
@@ -164,9 +165,11 @@ export const updateBorrowRecord: RequestHandler = async (req, res, next) => {
   }
 };
 
-// @route POST api/auth/login
-// @desc Login into account
-// @access Private
+/**
+ * Creates a new user.
+ * @param data The data of the user to create.
+ * @returns Promise<User | null>
+ */
 export const deleteBorrowRecord: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
 

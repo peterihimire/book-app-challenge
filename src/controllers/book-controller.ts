@@ -2,13 +2,6 @@ import { RequestHandler } from "express";
 import { httpStatusCodes } from "../utils/http-status-codes";
 import BaseError from "../utils/base-error";
 import { validationResult } from "express-validator";
-// import {
-//   foundBookById,
-//   foundBooks,
-//   updateBookById,
-//   deleteBookById,
-//   createBook,
-// } from "../repositories/book-repository";
 
 import {
   createBook,
@@ -18,9 +11,11 @@ import {
   deleteBookById,
 } from "../services/book-service";
 
-// @route POST api/auth/login
-// @desc Login into account
-// @access Private
+/**
+ * Creates a new user.
+ * @param data The data of the user to create.
+ * @returns Promise<User | null>
+ */
 export const addBook: RequestHandler = async (req, res, next) => {
   const { title, authorId, publishedYear, genre, availableCopies } = req.body;
 
@@ -63,9 +58,11 @@ export const addBook: RequestHandler = async (req, res, next) => {
   }
 };
 
-// @route POST api/auth/login
-// @desc Login into account
-// @access Private
+/**
+ * Creates a new user.
+ * @param data The data of the user to create.
+ * @returns Promise<User | null>
+ */
 export const getBooks: RequestHandler = async (req, res, next) => {
   try {
     const books = await findAllBooks();
@@ -83,9 +80,11 @@ export const getBooks: RequestHandler = async (req, res, next) => {
   }
 };
 
-// @route POST api/auth/login
-// @desc Login into account
-// @access Private
+/**
+ * Creates a new user.
+ * @param data The data of the user to create.
+ * @returns Promise<User | null>
+ */
 export const getBook: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
 
@@ -113,9 +112,11 @@ export const getBook: RequestHandler = async (req, res, next) => {
   }
 };
 
-// @route POST api/auth/login
-// @desc Login into account
-// @access Private
+/**
+ * Creates a new user.
+ * @param data The data of the user to create.
+ * @returns Promise<User | null>
+ */
 export const updateBook: RequestHandler = async (req, res, next) => {
   // const { admin } = req.session;
   const { id } = req.params;
@@ -157,9 +158,11 @@ export const updateBook: RequestHandler = async (req, res, next) => {
   }
 };
 
-// @route POST api/auth/login
-// @desc Login into account
-// @access Private
+/**
+ * Creates a new user.
+ * @param data The data of the user to create.
+ * @returns Promise<User | null>
+ */
 export const deleteBook: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
 

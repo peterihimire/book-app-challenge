@@ -11,9 +11,11 @@ import {
   createAuthor,
 } from "../services/author-service";
 
-// @route POST api/auth/login
-// @desc Login into account
-// @access Private
+/**
+ * Creates a new user.
+ * @param data The data of the user to create.
+ * @returns Promise<User | null>
+ */
 export const addAuthor: RequestHandler = async (req, res, next) => {
   const { name, bio, birthdate } = req.body;
 
@@ -56,9 +58,11 @@ export const addAuthor: RequestHandler = async (req, res, next) => {
   }
 };
 
-// @route POST api/auth/login
-// @desc Login into account
-// @access Private
+/**
+ * Creates a new user.
+ * @param data The data of the user to create.
+ * @returns Promise<User | null>
+ */
 export const getAuthors: RequestHandler = async (req, res, next) => {
   try {
     const authors = await findAllAuthors();
@@ -76,9 +80,11 @@ export const getAuthors: RequestHandler = async (req, res, next) => {
   }
 };
 
-// @route POST api/auth/login
-// @desc Login into account
-// @access Private
+/**
+ * Creates a new user.
+ * @param data The data of the user to create.
+ * @returns Promise<User | null>
+ */
 export const getAuthor: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
 
@@ -105,9 +111,11 @@ export const getAuthor: RequestHandler = async (req, res, next) => {
   }
 };
 
-// @route POST api/auth/login
-// @desc Login into account
-// @access Private
+/**
+ * Creates a new user.
+ * @param data The data of the user to create.
+ * @returns Promise<User | null>
+ */
 export const updateAuthor: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
 
@@ -149,9 +157,11 @@ export const updateAuthor: RequestHandler = async (req, res, next) => {
   }
 };
 
-// @route POST api/auth/login
-// @desc Login into account
-// @access Private
+/**
+ * Creates a new user.
+ * @param data The data of the user to create.
+ * @returns Promise<User | null>
+ */
 export const deleteAuthor: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
 
