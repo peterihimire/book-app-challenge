@@ -134,7 +134,7 @@ export const updateAuthor: RequestHandler = async (req, res, next) => {
         )
       );
     }
-    const { id: authorId, createdAt, updatedAt, ...others } = updatedAuthor;
+    const { createdAt, ...others } = updatedAuthor;
 
     res.status(httpStatusCodes.OK).json({
       status: "success",

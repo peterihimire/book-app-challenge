@@ -1,116 +1,199 @@
-# Book API Backend Challenge
+# Book Challenge API
+
+## Overview
+
+The Book Challenge API is a RESTful service for managing books, authors, and borrow records in a library system. It provides endpoints for creating, reading, updating, and deleting (CRUD) operations on books and authors, as well as managing borrow records.
+
+---
+
+## Features
+
+- User authentication and authorization
+- CRUD operations for books and authors
+- Borrow record management
+- Comprehensive error handling
+- Unit & Integration tests for services and API endpoints
+
+---
 
 ## Table of Contents
 
-- [General Information](#general-information)
-- [Dependencies](#dependencies)
-- [Setup](#setup)
-- [Usage](#usage)
-- [Postman Documentation](#postman-documentation)
+- [Getting Started](#getting-started)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Running the Server](#running-the-server)
+- [API Endpoints](#api-endpoints)
+- [Validation & Error Handling](#validation-&-error-handling)
+- [Running on Docker Container](#running-on-docker-container)
+- [Running Tests](#running-tests)
+- [Contributing](#contributing)
 
 ---
 
-## General Information
+## Getting Started
 
-The  challenge implementation by me, is a REST API, built with TypeScript, NodeJS, Express framework, PostgreSQL RDMS, Prisma ORM, Redis to manage the session which is the best practice when working with sessions on the server.
+Follow these instructions to set up the project on your local machine.
 
-In this API a User can Register, Login, add a friend, follow another user while on the flip side of things other user can also add other Users as friends and start following other users. This means that the relationship of user to friends and followers is many to many relationship.
+## Prerequisite
 
----
+- node.js (>= 14.x)
+- npm (>= 6.x) or yarn (>= 1.x)
+- postgreSQL (>= 12.x)
+- docker (optional, for running PostgreSQL in a container)
+- JWT
+- express
+- prisma
+- moment
+- typescript
+- cookie parser
+- cors
+- dotenv
 
-## Dependencies
+## Installation
 
-The following dependencies are required for the application:
-
-- `typescript`
-- `cookie-parser`
-- `express`
-- `Docker`
-- `bcrypt`
-- `redis`
-- `connect-redis`
-- `prisma`
-- `postgresql`
-- `pg`
-- `pg-hstore`
-- `cors`
-- `dotenv`
-
----
-
-## Setup
-
-1. Clone this repository to your desktop:
-   ```sh
-   git clone https://github.com/peterihimire/abbey-task-bkend.git
-   ```
-2. Change directory into the project folder:
-   ```sh
-   cd abbey-task-bkend
-   ```
-3. Create a .env file:
-   ```sh
-   touch .env
-   ```
-4. Copy the following environment variables to your .env file and customize them as needed:
-   ```txt
-   DATABASE_URL=postgresql://postgres:testing123@localhost:5432/abbey_app?schema=public
-   PORT=8082
-   SESSION_SECRET=secret$%^134
-   REDIS_HOST=localhost
-   REDIS_PORT=6379
-   ```
-5. Install the dependencies:
-   ```sh
-   npm install
-   ```
-6. Generate the Prisma client:
-   ```sh
-   npx prisma generate
-   ```
-7. Start the application:
-   ```sh
-   npm run start
-   ```
-   If all the setup is correct, on the server command line you should see this :
-  ![Cookie](https://res.cloudinary.com/dymhdpka1/image/upload/v1719684444/Screenshot_2024-06-29_at_7.06.01_PM_swxxdw.png)
-8. To test the API endpoints, use Postman or Insomnia. Optionally, add a global environment variable for the base URL (http://127.0.0.1:8082/api/abbeytask/v1) and name it as desired (e.g., {{URL}}).
-
-9. I provided a test API endpoint(http://127.0.0.1:8082/api/abbeytask/v1/test/test_api)
-The response is below:
-
-    ```json
-    {
-      "status": "success",
-      "msg": "Abbey Task API was initiated successfully!"
-    }
+1.  Clone the repository:
+    ```sh
+    git clone https://github.com/peterihimire/book-challenge-api.git
+    ```
+2.  Change directory into the project folder:
+    ```sh
+    cd book-challenge-api
+    ```
+3.  Install dependencies:
+    ```sh
+    npm install
+    ```
+4.  Set up the environment variables (See Environment Variables):
+    Create a .env file in the root directory and add the necessary environment variables.
+    ```env
+    DATABASE_URL=postgresql://postgres:testing123@localhost:5432/book_app?schema=public
+    PORT=8083
+    JWT_KEY=evilsecret123
+    POSTGRES_USER=postgres
+    POSTGRES_PASSWORD=testing123
+    POSTGRES_DB=book_app
+    ```
+5.  Run database migration:
+    ```sh
+    npx prisma migrate dev
     ```
 
----
+## Running the Server
 
-## Usage
+1.  Start the server:
+    ```sh
+    npm start
+    # or
+    yarn start
+    ```
+2.  Access the API documentation:
+    Open your browser and navigate to `http://localhost:8083/api/bookchallenge/v1/api-docs` to view the API documentation.
 
+## API Endpoints
 
+### Authentication
 
-- **Register:** Use this endpoint: http://127.0.0.1:8082/api/abbeytask/v1/auth/register. The response will look like this:
-  ![Cookie](https://res.cloudinary.com/dymhdpka1/image/upload/v1719683426/Screenshot_2024-06-29_at_6.34.44_PM_cvgdzd.png)
+- **Sign Up**: `POST /api/bookchallenge/v1/auth/signup`
+- **Sign In**: `POST /api/bookchallenge/v1/auth/signin`
+- **Sign Out**: `POST /api/bookchallenge/v1/auth/signout`
 
-- **Login:** Use this endpoint: http://127.0.0.1:8082/api/abbeytask/v1/auth/login. This is what login looks like. I purposely return minimal user information, so that when a user request for their account info, they get to see more of their details:
-  ![Cookie](https://res.cloudinary.com/dymhdpka1/image/upload/v1719683427/Screenshot_2024-06-29_at_6.34.57_PM_g9gg9u.png)
+### Authors
 
-- **Add Friend:** Use this endpoint: http://127.0.0.1:8082/api/abbeytask/v1/users/add_friend. If session is setup properly, a cookie from the server will be sent to the browser for validating of the user to be able to add a friend:
-  ![Cookie](https://res.cloudinary.com/dymhdpka1/image/upload/v1719683435/Screenshot_2024-06-29_at_6.33.44_PM_qhfa5l.png)
+- **Create Author**: `POST /api/bookchallenge/v1/authors`
+- **Get All Authors**: `GET /api/bookchallenge/v1/authors`
+- **Get Author by ID**: `GET /api/bookchallenge/v1/authors/:id`
+- **Update Author by ID**: `PATCH /api/bookchallenge/v1/authors/:id`
+- **Delete Author by ID**: `DELETE /api/bookchallenge/v1/authors/:id`
 
-- **Start Following a User:** Use this endpoint: http://127.0.0.1:8082/api/abbeytask/v1/users/add_follower. Only authenticated users can follow another user, els an error will be thrown that you are not authorized to view the resources:
-  ![Cookie](https://res.cloudinary.com/dymhdpka1/image/upload/v1719683426/Screenshot_2024-06-29_at_6.34.21_PM_uxk4tn.png)
-- **Get Accout Details:** Use this endpoint: http://127.0.0.1:8082/api/abbeytask/v1/users/acct_info. This endpoint returns the complete user information, including his friends, followers and more:
-  ![Cookie](https://res.cloudinary.com/dymhdpka1/image/upload/v1719683422/Screenshot_2024-06-29_at_6.31.58_PM_we1s70.png)
+### Books
 
-- **Logout:** Use this endpoint: http://127.0.0.1:8082/api/abbeytask/v1/auth/logout. This endpoint is used to logout from the application, this clears the session from the redis store:
-  ![Cookie](https://res.cloudinary.com/dymhdpka1/image/upload/v1719683427/Screenshot_2024-06-29_at_6.35.08_PM_exipsx.png)
+- **Create Book**: `POST /api/bookchallenge/v1/books`
+- **Get All Books**: `GET /api/bookchallenge/v1/books`
+- **Get Book by ID**: `GET /api/bookchallenge/v1/books/:id`
+- **Update Book by ID**: `PATCH /api/bookchallenge/v1/books/:id`
+- **Delete Book by ID**: `DELETE /api/bookchallenge/v1/books/:id`
 
----
+### Borrow Records
 
-## Postman Documentation
+- **Create Borrow Record**: `POST /api/bookchallenge/v1/borrow-records`
+- **Get All Borrow Records**: `GET /api/bookchallenge/v1/borrow-records`
+- **Get Borrow Record by ID**: `GET /api/bookchallenge/v1/borrow-records/:id`
+- **Update Borrow Record by ID**: `PATCH /api/bookchallenge/v1/borrow-records/:id`
+- **Delete Borrow Record by ID**: `DELETE /api/bookchallenge/v1/borrow-records/:id`
 
-For more detailed information and API documentation, visit the [Postman Documentation](https://documenter.getpostman.com/view/12340633/2sA3duGDGB).
+## Validation & Error Handling
+
+Input validation was integrated for adding book, author and borrow record. Also the API uses a centralized error handling mechanism to ensure consistent error responses. Errors are categorized by HTTP status codes and include descriptive messages.
+
+## Running on Docker Container
+
+1.  Modify the env file : Replace the DATABASE_URL host `@localhost:5432`, with this `@db:5432`. `db` refers to the service name where the postgres is running in the docker container.:
+
+```env
+DATABASE_URL=postgresql://postgres:testing123@db:5432/book_app?schema=public
+JWT_KEY=evilsecret123
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=testing123
+POSTGRES_DB=book_app
+```
+
+2. Run the below command:
+
+```sh
+docker compose up --build -d
+```
+
+3. Access the Container: Open a shell in your API container.
+
+```sh
+docker exec -it book-app-challenge-api-1 /bin/bash
+
+```
+4. Run Prisma Migrate: Inside the container, navigate to the directory where your prisma folder is located and run the migration command.
+
+```sh
+npx prisma migrate deploy
+
+```
+4b. Exit from the `book-app-challenge-api-1` container
+
+```sh
+exit
+
+```
+5. Access the PostgreSQL Container: Open a shell in your PostgreSQL container.
+
+```sh
+docker exec -it book-app-challenge-db-1 /bin/bash
+```
+6. Use psql to Run the Script: Assuming your SQL scripts are mounted in the container, you can run them using psql.
+
+```sh
+psql -U postgres -d book_app
+```
+7. List all the tables.
+
+```sh
+\dt
+```
+8. I plan to extend the app to run on port 8080 with nginx.
+
+## Running Test
+
+Unit test with jest and integration test with Supertest was integrated to test both the services and the API endpooints for books, authors and borrow reports:
+
+```sh
+npm test
+# or
+yarn test
+```
+
+## Contributing
+
+Contributions are welcome! Please follow these steps to contribute:
+
+1. Fork the repository.
+2. Create a new branch.
+3. Make your changes and commit them.
+4. Push your changes to your forked repository.
+5. Create a pull request.

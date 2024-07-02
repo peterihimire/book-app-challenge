@@ -16,7 +16,6 @@ services:
         ipv4_address: 192.175.0.2
     restart: always
   db:
-    container_name: postgres
     image: postgres
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
