@@ -1,12 +1,50 @@
 import { prisma } from "../database/prisma";
 import { Book } from "@prisma/client";
 
+interface PaginatedBooks {
+  count: number;
+  rows: {
+    id: number;
+    title: string;
+    authorId: number;
+    publishedYear: string;
+    genre: string;
+    availableCopies: number;
+    createdAt: Date;
+    updatedAt: Date;
+  }[];
+}
+
 /**
  * Fetches all books.
  * @returns Promise<Book[]>
  */
 export const foundBooks = async (): Promise<Book[]> => {
   return prisma.book.findMany();
+};
+
+/**
+ * Fetches all books.
+ * @returns Promise<Book[]>
+ */
+export const foundBooksPag = async (
+  condition: any,
+  limit: number,
+  offset: number
+): Promise<PaginatedBooks> => {
+  // Fetch the products with pagination
+  const books = await prisma.book.findMany({
+    where: condition,
+    skip: offset,
+    take: limit,
+  });
+
+  // Get the total count of books matching the condition
+  const totalItems = await prisma.book.count({
+    where: condition,
+  });
+
+  return { count: totalItems, rows: books };
 };
 
 /**

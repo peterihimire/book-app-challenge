@@ -1,12 +1,47 @@
 import { prisma } from "../database/prisma";
 import { Author } from "@prisma/client";
 
+interface PaginatedAuthors {
+  count: number;
+  rows: {
+    id: number;
+    name: string;
+    birthdate: Date;
+    bio: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }[];
+}
 /**
  * Fetches all authors.
  * @returns Promise<Author[]>
  */
 export const foundAuthors = async (): Promise<Author[]> => {
   return prisma.author.findMany();
+};
+
+/**
+ * Fetches authors with paginations.
+ * @returns Promise<Author[]>
+ */
+export const foundAuthorsPag = async (
+  condition: any,
+  limit: number,
+  offset: number
+): Promise<PaginatedAuthors> => {
+  // Fetch the authors with pagination
+  const authors = await prisma.author.findMany({
+    where: condition,
+    skip: offset,
+    take: limit,
+  });
+
+  // Get the total count of authors matching the condition
+  const totalItems = await prisma.author.count({
+    where: condition,
+  });
+
+  return { count: totalItems, rows: authors };
 };
 
 /**

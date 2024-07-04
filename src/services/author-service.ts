@@ -1,11 +1,25 @@
 import { Author } from "@prisma/client";
 import {
   foundAuthors as foundAuthorsRepository,
+  foundAuthorsPag as findAuthorsByFilterRepository,
   foundAuthorById as foundAuthorByIdRepository,
   createAuthor as createAuthorRepository,
   updateAuthorById as updateAuthorByIdRepository,
   deleteAuthorById as deleteAuthorByIdRepository,
+
 } from "../repositories/author-repository";
+
+interface PaginatedAuthors {
+  count: number;
+  rows: {
+    id: number;
+    name: string;
+    birthdate: Date;
+    bio: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }[];
+}
 
 /**
  * Fetches all authors.
@@ -13,6 +27,21 @@ import {
  */
 export const findAllAuthors = async (): Promise<Author[]> => {
   return foundAuthorsRepository();
+};
+
+/**
+ * Fetches books by filter with pagination.
+ * @param condition The filter conditions.
+ * @param limit The number of records to fetch.
+ * @param offset The number of records to skip.
+ * @returns Promise<PaginatedBooks>
+ */
+export const findAuthorsByFilter = async (
+  condition: any,
+  limit: number,
+  offset: number
+): Promise<PaginatedAuthors> => {
+  return findAuthorsByFilterRepository(condition, limit, offset);
 };
 
 /**

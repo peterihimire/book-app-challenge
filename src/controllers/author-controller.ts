@@ -5,6 +5,7 @@ import BaseError from "../utils/base-error";
 import { validationResult } from "express-validator";
 import {
   findAllAuthors,
+  findAuthorsByFilter,
   findAuthorById,
   updateAuthorById,
   deleteAuthorById,
@@ -71,6 +72,69 @@ export const getAuthors: RequestHandler = async (req, res, next) => {
       status: "success",
       msg: "Author List!.",
       data: authors,
+    });
+  } catch (error: any) {
+    if (!error.statusCode) {
+      error.statusCode = httpStatusCodes.INTERNAL_SERVER;
+    }
+    next(error);
+  }
+};
+
+/**
+ * Creates a new user.
+ * @param data The data of the user to create.
+ * @returns Promise<User | null>
+ */
+export const getAuthorsByFilter: RequestHandler = async (req, res, next) => {
+  const { pageNum, pageSize, name, bio, birthdate } = req.query;
+
+  // Define a function to calculate pagination
+  const getPagination = (
+    pageNumb: string | undefined,
+    sizeNum: string | undefined
+  ) => {
+    const pageNumber: number = pageNumb ? parseInt(pageNumb, 10) : 0;
+    const pageSize: number = sizeNum ? parseInt(sizeNum, 10) : 5;
+
+    const limit: number = pageSize ? +pageSize : 10;
+    const offset: number = pageNumber ? pageNumber * (limit ?? 0) : 0;
+
+    return { limit, offset };
+  };
+
+  // Construct the condition based on the query parameters
+  const where: any = {};
+  if (name) {
+    where.name = { contains: name as string, mode: "insensitive" };
+  }
+  if (bio) {
+    where.bio = {
+      contains: bio as string,
+      mode: "insensitive",
+    };
+  }
+ if (birthdate) where.birthdate = { equals: new Date(birthdate as string) };
+
+  try {
+    const { limit, offset } = getPagination(
+      pageNum as string,
+      pageSize as string
+    );
+    const foundAuthors = await findAuthorsByFilter(where, limit, offset);
+    const { count: totalItems, rows: authors } = foundAuthors;
+    const totalPages = Math.ceil(totalItems / limit);
+    const currentPage = Number(pageNum) || 0;
+
+    res.status(httpStatusCodes.OK).json({
+      status: "success",
+      msg: "Searched Authors!.",
+      data: {
+        totalItems,
+        authorRecords: authors,
+        totalPages,
+        currentPage,
+      },
     });
   } catch (error: any) {
     if (!error.statusCode) {

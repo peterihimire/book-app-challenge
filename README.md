@@ -88,7 +88,7 @@ Follow these instructions to set up the project on your local machine.
     yarn start
     ```
 2.  Access the API documentation:
-    Open your browser and navigate to  `http://localhost:8083/api/bookchallenge/v1/api-docs` to view the API documentation once connected to the localhost server or visit postman documentation [Link](https://documenter.getpostman.com/view/12340633/2sA3duGDGB) to this app.
+    Open your browser and navigate to  `http://localhost:8083/api/bookchallenge/v1/api-docs` to view the API documentation once connected to the localhost server or visit postman documentation [Link](https://documenter.getpostman.com/view/12340633/2sA3dvjsbN) to this app.
 
 ## API Endpoints
 

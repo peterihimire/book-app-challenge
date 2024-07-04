@@ -1,11 +1,26 @@
 import { Book } from "@prisma/client";
 import {
   foundBooks as findBooksRepository,
+  foundBooksPag as findBooksByFilterRepository,
   foundBookById as findBookByIdRepository,
   createBook as createBookRepository,
   updateBookById as updateBookByIdRepository,
   deleteBookById as deleteBookByIdRepository,
 } from "../repositories/book-repository";
+
+interface PaginatedBooks {
+  count: number;
+  rows: {
+    id: number;
+    title: string;
+    authorId: number;
+    publishedYear: string;
+    genre: string;
+    availableCopies: number;
+    createdAt: Date;
+    updatedAt: Date;
+  }[];
+}
 
 /**
  * Fetches all books.
@@ -13,6 +28,21 @@ import {
  */
 export const findAllBooks = async (): Promise<Book[]> => {
   return findBooksRepository();
+};
+
+/**
+ * Fetches books by filter with pagination.
+ * @param condition The filter conditions.
+ * @param limit The number of records to fetch.
+ * @param offset The number of records to skip.
+ * @returns Promise<PaginatedBooks>
+ */
+export const findBooksByFilter = async (
+  condition: any,
+  limit: number,
+  offset: number
+): Promise<PaginatedBooks> => {
+  return findBooksByFilterRepository(condition, limit, offset);
 };
 
 /**
